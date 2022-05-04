@@ -57,6 +57,26 @@ const Home = () => {
             });
     };
 
+    const logout = () => {
+        const token = user.token;
+        const URI = 'http://localhost:5000/logout';
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        axios
+            .post(URI, {}, config)
+            .then((res) => {
+                localStorage.removeItem('user');
+                navigate('/');
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            });
+    };
+
     const totalCalculations = () => {
         let total = 0;
         transactions.forEach((transaction) => {
@@ -86,8 +106,7 @@ const Home = () => {
                 <RiLogoutBoxRLine
                     className="logout"
                     onClick={() => {
-                        localStorage.removeItem('user');
-                        navigate('/');
+                        logout();
                     }}
                 />
             </header>

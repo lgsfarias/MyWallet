@@ -10,6 +10,7 @@ const NewTransaction = () => {
     const { state } = useLocation();
     const [amount, setAmount] = useState(state.amount);
     const [description, setDescription] = useState(state.description);
+    // eslint-disable-next-line
     const [type, setType] = useState(state.type);
     const { id } = useParams();
     const navigate = useNavigate();

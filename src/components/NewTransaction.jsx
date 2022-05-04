@@ -107,7 +107,6 @@ const NewTransactionContainer = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 400px;
 
         input {
             width: 100%;
