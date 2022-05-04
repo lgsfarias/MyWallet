@@ -5,6 +5,7 @@ import Home from './components/Home';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import NewTransaction from './components/NewTransaction';
+import EditTransaction from './components/EditTransaction';
 import UserContext from './contexts/UserContext';
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
                     path="/newtransaction/:type"
                     element={<NewTransaction />}
                 />
+                <Route path="/edit/:id" element={<EditTransaction />} />
             </Routes>
         </UserContext.Provider>
     );

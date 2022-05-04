@@ -13,6 +13,32 @@ const Home = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
+    const deleteTransaction = (id) => {
+        const confirmation = window.confirm(
+            'Quer mesmo deletar essa transação?'
+        );
+        if (confirmation) {
+            const URI = `http://localhost:5000/transactions/${id}`;
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+
+            axios
+                .delete(URI, config)
+                .then(() => {
+                    getTransactions();
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
+        } else {
+            return;
+        }
+    };
+
     const getTransactions = () => {
         const URI = 'http://localhost:5000/transactions';
 
@@ -73,6 +99,16 @@ const Home = () => {
                                 <div
                                     className="transaction"
                                     key={transaction._id}
+                                    onClick={() => {
+                                        navigate(`/edit/${transaction._id}`, {
+                                            state: {
+                                                amount: transaction.amount,
+                                                description:
+                                                    transaction.description,
+                                                type: transaction.type,
+                                            },
+                                        });
+                                    }}
                                 >
                                     <div className="transaction-info">
                                         <h3 className="date">
@@ -94,6 +130,17 @@ const Home = () => {
                                                 transaction.amount
                                             ).toFixed(2)}
                                         </h3>
+                                        <p
+                                            className="delete"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                deleteTransaction(
+                                                    transaction._id
+                                                );
+                                            }}
+                                        >
+                                            x
+                                        </p>
                                     </div>
                                 </div>
                             ))}
@@ -204,6 +251,7 @@ const Main = styled.main`
         align-items: center;
         width: 100%;
         margin-bottom: 15px;
+        cursor: pointer;
 
         .transaction-info {
             display: flex;
@@ -239,6 +287,12 @@ const Main = styled.main`
 
             .out {
                 color: #c70000;
+            }
+
+            .delete {
+                cursor: pointer;
+                opacity: 0.3;
+                margin-left: 5px;
             }
         }
     }
