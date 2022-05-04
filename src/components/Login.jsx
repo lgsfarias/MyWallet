@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+
+import UserContext from '../contexts/UserContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const { setUser } = useContext(UserContext);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
             .post('http://localhost:5000/login', { email, password })
             .then((res) => {
-                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('user', JSON.stringify(res.data));
+                setUser(res.data);
                 navigate('/home');
             })
             .catch((err) => {
                 console.log(err.response.data);
             });
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            setUser(JSON.parse(localStorage.getItem('user')));
+            navigate('/home');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <LoginContainer>
