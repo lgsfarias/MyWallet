@@ -72,7 +72,7 @@ const Home = () => {
                             {transactions.map((transaction) => (
                                 <div
                                     className="transaction"
-                                    key={transaction.id}
+                                    key={transaction._id}
                                 >
                                     <div className="transaction-info">
                                         <h3 className="date">
