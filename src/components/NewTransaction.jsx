@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ImCancelCircle } from 'react-icons/im';
 
 import UserContext from '../contexts/UserContext';
 
@@ -41,7 +42,13 @@ const NewTransaction = () => {
 
     return (
         <NewTransactionContainer>
-            <h1>Nova {type}</h1>
+            <header>
+                <h1>Nova {type}</h1>
+                <ImCancelCircle
+                    className="cancel"
+                    onClick={() => navigate('/home')}
+                />
+            </header>
             <form onSubmit={handleSubmit}>
                 <input
                     type="number"
@@ -69,15 +76,30 @@ const NewTransactionContainer = styled.div`
     justify-content: flex-start;
     width: 100vw;
     height: 100vh;
-    padding: 25px;
+    padding: 0 25px;
     background-color: #8c11be;
 
-    h1 {
-        font-weight: bold;
-        font-size: 26px;
-        line-height: 31px;
-        color: #ffffff;
-        margin-bottom: 40px;
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 80px;
+        margin-bottom: 15px;
+
+        h1 {
+            font-weight: bold;
+            font-size: 26px;
+            line-height: 31px;
+            color: #ffffff;
+        }
+
+        .cancel {
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 23px;
+        }
     }
 
     form {
