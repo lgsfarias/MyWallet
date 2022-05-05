@@ -18,7 +18,7 @@ const Home = () => {
             'Quer mesmo deletar essa transação?'
         );
         if (confirmation) {
-            const URI = `http://localhost:5000/transactions/${id}`;
+            const URI = `https://mywallet-project-api.herokuapp.com/transactions/${id}`;
 
             const config = {
                 headers: {
@@ -40,7 +40,7 @@ const Home = () => {
     };
 
     const getTransactions = () => {
-        const URI = 'http://localhost:5000/transactions';
+        const URI = 'https://mywallet-project-api.herokuapp.com/transactions';
 
         const config = {
             headers: {
@@ -59,7 +59,7 @@ const Home = () => {
 
     const logout = () => {
         const token = user.token;
-        const URI = 'http://localhost:5000/logout';
+        const URI = 'https://mywallet-project-api.herokuapp.com/logout';
 
         const config = {
             headers: {

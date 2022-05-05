@@ -16,7 +16,7 @@ const NewTransaction = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const URI = 'http://localhost:5000/transactions';
+        const URI = 'https://mywallet-project-api.herokuapp.com/transactions';
 
         const config = {
             headers: {

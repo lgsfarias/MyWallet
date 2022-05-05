@@ -15,7 +15,10 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .post('http://localhost:5000/login', { email, password })
+            .post('https://mywallet-project-api.herokuapp.com/login', {
+                email,
+                password,
+            })
             .then((res) => {
                 localStorage.setItem('user', JSON.stringify(res.data));
                 setUser(res.data);

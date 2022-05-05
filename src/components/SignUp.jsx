@@ -13,7 +13,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .post('http://localhost:5000/signup', {
+            .post('https://mywallet-project-api.herokuapp.com/signup', {
                 name,
                 email,
                 password,
