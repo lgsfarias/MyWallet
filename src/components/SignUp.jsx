@@ -20,6 +20,7 @@ const SignUp = () => {
                 confirmPassword,
             })
             .then((res) => {
+                alert('Usuário criado com sucesso!');
                 navigate('/');
             })
             .catch((err) => {
