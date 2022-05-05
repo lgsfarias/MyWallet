@@ -32,7 +32,7 @@ const Home = () => {
                     getTransactions();
                 })
                 .catch((err) => {
-                    console.log(err.response.data);
+                    alert(err.response.data);
                 });
         } else {
             return;
@@ -53,7 +53,7 @@ const Home = () => {
                 setTransactions(res.data);
             })
             .catch((err) => {
-                console.log(err.response.data);
+                alert(err.response.data);
             });
     };
 
@@ -73,7 +73,7 @@ const Home = () => {
                 navigate('/');
             })
             .catch((err) => {
-                console.log(err.response.data);
+                alert(err.response.data);
             });
     };
 
