@@ -7,6 +7,8 @@ import Login from './components/Login';
 import NewTransaction from './components/NewTransaction';
 import EditTransaction from './components/EditTransaction';
 import UserContext from './contexts/UserContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
     const [user, setUser] = useState(
@@ -17,12 +19,31 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/home" element={<Home />} />
+                <Route
+                    path="/home"
+                    element={
+                        <ProtectedRoute>
+                            <Home />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route
                     path="/newtransaction/:type"
-                    element={<NewTransaction />}
+                    element={
+                        <ProtectedRoute>
+                            <NewTransaction />
+                        </ProtectedRoute>
+                    }
                 />
-                <Route path="/edit/:id" element={<EditTransaction />} />
+                <Route
+                    path="/edit/:id"
+                    element={
+                        <ProtectedRoute>
+                            <EditTransaction />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </UserContext.Provider>
     );
