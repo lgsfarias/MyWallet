@@ -135,6 +135,7 @@ const NewTransactionContainer = styled.div`
             line-height: 23px;
             color: #ffffff;
             font-weight: bold;
+            cursor: pointer;
         }
     }
 `;
