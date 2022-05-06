@@ -114,55 +114,60 @@ const Home = () => {
                 {transactions ? (
                     transactions.length > 0 ? (
                         <>
-                            {transactions.map((transaction) => (
-                                <div
-                                    className="transaction"
-                                    key={transaction._id}
-                                    onClick={() => {
-                                        navigate(`/edit/${transaction._id}`, {
-                                            state: {
-                                                amount: transaction.amount,
-                                                description:
-                                                    transaction.description,
-                                                type: transaction.type,
-                                            },
-                                        });
-                                    }}
-                                >
-                                    <div className="transaction-info">
-                                        <h3 className="date">
-                                            {transaction.date}
-                                        </h3>
-                                        <h3 className="description">
-                                            {transaction.description}
-                                        </h3>
+                            <div className="transactions-container">
+                                {transactions.map((transaction) => (
+                                    <div
+                                        className="transaction"
+                                        key={transaction._id}
+                                        onClick={() => {
+                                            navigate(
+                                                `/edit/${transaction._id}`,
+                                                {
+                                                    state: {
+                                                        amount: transaction.amount,
+                                                        description:
+                                                            transaction.description,
+                                                        type: transaction.type,
+                                                    },
+                                                }
+                                            );
+                                        }}
+                                    >
+                                        <div className="transaction-info">
+                                            <h3 className="date">
+                                                {transaction.date}
+                                            </h3>
+                                            <h3 className="description">
+                                                {transaction.description}
+                                            </h3>
+                                        </div>
+                                        <div className="transaction-amount">
+                                            <h3
+                                                className={
+                                                    transaction.type === 'in'
+                                                        ? 'in'
+                                                        : 'out'
+                                                }
+                                            >
+                                                {parseFloat(
+                                                    transaction.amount
+                                                ).toFixed(2)}
+                                            </h3>
+                                            <p
+                                                className="delete"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteTransaction(
+                                                        transaction._id
+                                                    );
+                                                }}
+                                            >
+                                                x
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="transaction-amount">
-                                        <h3
-                                            className={
-                                                transaction.type === 'in'
-                                                    ? 'in'
-                                                    : 'out'
-                                            }
-                                        >
-                                            {parseFloat(
-                                                transaction.amount
-                                            ).toFixed(2)}
-                                        </h3>
-                                        <p
-                                            className="delete"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                deleteTransaction(
-                                                    transaction._id
-                                                );
-                                            }}
-                                        >
-                                            x
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                             <div className="total">
                                 <h3 className="balance">SALDO</h3>
                                 <h3
@@ -249,7 +254,7 @@ const Main = styled.main`
     position: fixed;
     top: 80px;
     bottom: 150px;
-    padding: 25px 15px;
+    padding: 25px 15px 50px 15px;
     background-color: #fff;
     border-radius: 5px;
 
@@ -262,6 +267,30 @@ const Main = styled.main`
         position: absolute;
         top: 50%;
         transform: translatey(-50%);
+    }
+
+    .transactions-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8c11be;
+            border-radius: 10px;
+        }
     }
 
     .transaction {
