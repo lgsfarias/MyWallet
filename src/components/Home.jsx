@@ -8,8 +8,25 @@ import UserContext from '../contexts/UserContext';
 import NewTransactionButton from './NewTransactionButton';
 
 const Home = () => {
+    const months = [
+        'Janeiro',
+        'Fevereiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
+        'Julho',
+        'Agosto',
+        'Setembro',
+        'Outubro',
+        'Novembro',
+        'Dezembro',
+    ];
     const [transactions, setTransactions] = useState([]);
     const [total, setTotal] = useState(0);
+    const [monthFilter, setMonthFilter] = useState(
+        months[new Date().getMonth()]
+    );
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -79,7 +96,12 @@ const Home = () => {
 
     const totalCalculations = () => {
         let total = 0;
-        transactions.forEach((transaction) => {
+        const monthTransactions = transactions.filter(
+            (transaction) =>
+                parseInt(transaction.date.split('/')[1]) ===
+                months.findIndex((month) => month === monthFilter) + 1
+        );
+        monthTransactions.forEach((transaction) => {
             if (transaction.type === 'in') {
                 total += transaction.amount;
             } else {
@@ -97,7 +119,7 @@ const Home = () => {
     useEffect(() => {
         setTotal(totalCalculations());
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [transactions]);
+    }, [transactions, monthFilter]);
 
     return (
         <HomeContainer>
@@ -111,62 +133,89 @@ const Home = () => {
                 />
             </header>
             <Main>
+                <select
+                    className="month-filter"
+                    name="filter"
+                    defaultValue={monthFilter}
+                    onChange={(e) => {
+                        setMonthFilter(e.target.value);
+                    }}
+                >
+                    {months.map((month) => (
+                        <option key={month} value={month}>
+                            {month}
+                        </option>
+                    ))}
+                </select>
+
                 {transactions ? (
                     transactions.length > 0 ? (
                         <>
                             <div className="transactions-container">
-                                {transactions.map((transaction) => (
-                                    <div
-                                        className="transaction"
-                                        key={transaction._id}
-                                        onClick={() => {
-                                            navigate(
-                                                `/edit/${transaction._id}`,
-                                                {
-                                                    state: {
-                                                        amount: transaction.amount,
-                                                        description:
-                                                            transaction.description,
-                                                        type: transaction.type,
-                                                    },
-                                                }
-                                            );
-                                        }}
-                                    >
-                                        <div className="transaction-info">
-                                            <h3 className="date">
-                                                {transaction.date}
-                                            </h3>
-                                            <h3 className="description">
-                                                {transaction.description}
-                                            </h3>
+                                {transactions
+                                    .filter(
+                                        (transaction) =>
+                                            parseInt(
+                                                transaction.date.split('/')[1]
+                                            ) ===
+                                            months.findIndex(
+                                                (month) => month === monthFilter
+                                            ) +
+                                                1
+                                    )
+                                    .map((transaction) => (
+                                        <div
+                                            className="transaction"
+                                            key={transaction._id}
+                                            onClick={() => {
+                                                navigate(
+                                                    `/edit/${transaction._id}`,
+                                                    {
+                                                        state: {
+                                                            amount: transaction.amount,
+                                                            description:
+                                                                transaction.description,
+                                                            type: transaction.type,
+                                                        },
+                                                    }
+                                                );
+                                            }}
+                                        >
+                                            <div className="transaction-info">
+                                                <h3 className="date">
+                                                    {transaction.date}
+                                                </h3>
+                                                <h3 className="description">
+                                                    {transaction.description}
+                                                </h3>
+                                            </div>
+                                            <div className="transaction-amount">
+                                                <h3
+                                                    className={
+                                                        transaction.type ===
+                                                        'in'
+                                                            ? 'in'
+                                                            : 'out'
+                                                    }
+                                                >
+                                                    {parseFloat(
+                                                        transaction.amount
+                                                    ).toFixed(2)}
+                                                </h3>
+                                                <p
+                                                    className="delete"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        deleteTransaction(
+                                                            transaction._id
+                                                        );
+                                                    }}
+                                                >
+                                                    x
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className="transaction-amount">
-                                            <h3
-                                                className={
-                                                    transaction.type === 'in'
-                                                        ? 'in'
-                                                        : 'out'
-                                                }
-                                            >
-                                                {parseFloat(
-                                                    transaction.amount
-                                                ).toFixed(2)}
-                                            </h3>
-                                            <p
-                                                className="delete"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    deleteTransaction(
-                                                        transaction._id
-                                                    );
-                                                }}
-                                            >
-                                                x
-                                            </p>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                             <div className="total">
                                 <h3 className="balance">SALDO</h3>
@@ -254,7 +303,7 @@ const Main = styled.main`
     position: fixed;
     top: 80px;
     bottom: 150px;
-    padding: 25px 15px 50px 15px;
+    padding: 15px 15px 50px 15px;
     background-color: #fff;
     border-radius: 5px;
 
@@ -267,6 +316,22 @@ const Main = styled.main`
         position: absolute;
         top: 50%;
         transform: translatey(-50%);
+    }
+
+    .month-filter {
+        width: 150px;
+        height: 30px;
+        border: none;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        background-color: #8c11be;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        align-self: flex-start;
     }
 
     .transactions-container {
