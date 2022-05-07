@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner';
 import { ImCancelCircle } from 'react-icons/im';
 
 import UserContext from '../contexts/UserContext';
@@ -12,6 +13,7 @@ const NewTransaction = () => {
     const [description, setDescription] = useState(state.description);
     // eslint-disable-next-line
     const [type, setType] = useState(state.type);
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -19,6 +21,7 @@ const NewTransaction = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         const URI = `https://mywallet-project-api.herokuapp.com/transactions/${id}`;
 
         const config = {
@@ -39,6 +42,7 @@ const NewTransaction = () => {
                 navigate('/home');
             })
             .catch((err) => {
+                setLoading(false);
                 alert(err.response.data);
             });
     };
@@ -58,15 +62,21 @@ const NewTransaction = () => {
                     placeholder="Valor"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
+                    disabled={loading}
                 />
                 <input
                     type="text"
                     placeholder="Descrição"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    disabled={loading}
                 />
                 <button type="submit">
-                    Atualizar {type === 'in' ? 'entrada' : 'saída'}
+                    {loading ? (
+                        <ThreeDots color="#fff" />
+                    ) : (
+                        `Atualizar ${type === 'in' ? 'entrada' : 'saída'}`
+                    )}
                 </button>
             </form>
         </NewTransactionContainer>
@@ -126,6 +136,9 @@ const NewTransactionContainer = styled.div`
         }
 
         button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             height: 58px;
             border: none;

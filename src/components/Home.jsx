@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import UserContext from '../contexts/UserContext';
@@ -27,6 +28,7 @@ const Home = () => {
     const [monthFilter, setMonthFilter] = useState(
         months[new Date().getMonth()]
     );
+    const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -35,6 +37,7 @@ const Home = () => {
             'Quer mesmo deletar essa transação?'
         );
         if (confirmation) {
+            setLoading(true);
             const URI = `https://mywallet-project-api.herokuapp.com/transactions/${id}`;
 
             const config = {
@@ -49,6 +52,7 @@ const Home = () => {
                     getTransactions();
                 })
                 .catch((err) => {
+                    setLoading(false);
                     alert(err.response.data);
                 });
         } else {
@@ -57,6 +61,7 @@ const Home = () => {
     };
 
     const getTransactions = () => {
+        setLoading(true);
         const URI = 'https://mywallet-project-api.herokuapp.com/transactions';
 
         const config = {
@@ -68,13 +73,16 @@ const Home = () => {
             .get(URI, config)
             .then((res) => {
                 setTransactions(res.data);
+                setLoading(false);
             })
             .catch((err) => {
+                setLoading(false);
                 alert(err.response.data);
             });
     };
 
     const logout = () => {
+        setLoading(true);
         const token = user.token;
         const URI = 'https://mywallet-project-api.herokuapp.com/logout';
 
@@ -90,6 +98,7 @@ const Home = () => {
                 navigate('/');
             })
             .catch((err) => {
+                setLoading(false);
                 alert(err.response.data);
             });
     };
@@ -148,91 +157,88 @@ const Home = () => {
                     ))}
                 </select>
 
-                {transactions ? (
-                    transactions.length > 0 ? (
-                        <>
-                            <div className="transactions-container">
-                                {transactions
-                                    .filter(
-                                        (transaction) =>
-                                            parseInt(
-                                                transaction.date.split('/')[1]
-                                            ) ===
-                                            months.findIndex(
-                                                (month) => month === monthFilter
-                                            ) +
-                                                1
-                                    )
-                                    .map((transaction) => (
-                                        <div
-                                            className="transaction"
-                                            key={transaction._id}
-                                            onClick={() => {
-                                                navigate(
-                                                    `/edit/${transaction._id}`,
-                                                    {
-                                                        state: {
-                                                            amount: transaction.amount,
-                                                            description:
-                                                                transaction.description,
-                                                            type: transaction.type,
-                                                        },
-                                                    }
-                                                );
-                                            }}
-                                        >
-                                            <div className="transaction-info">
-                                                <h3 className="date">
-                                                    {transaction.date}
-                                                </h3>
-                                                <h3 className="description">
-                                                    {transaction.description}
-                                                </h3>
-                                            </div>
-                                            <div className="transaction-amount">
-                                                <h3
-                                                    className={
-                                                        transaction.type ===
-                                                        'in'
-                                                            ? 'in'
-                                                            : 'out'
-                                                    }
-                                                >
-                                                    {parseFloat(
-                                                        transaction.amount
-                                                    ).toFixed(2)}
-                                                </h3>
-                                                <p
-                                                    className="delete"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        deleteTransaction(
-                                                            transaction._id
-                                                        );
-                                                    }}
-                                                >
-                                                    x
-                                                </p>
-                                            </div>
+                {loading ? (
+                    <h1>
+                        <ThreeDots color="#8c11be" />
+                    </h1>
+                ) : transactions.length > 0 ? (
+                    <>
+                        <div className="transactions-container">
+                            {transactions
+                                .filter(
+                                    (transaction) =>
+                                        parseInt(
+                                            transaction.date.split('/')[1]
+                                        ) ===
+                                        months.findIndex(
+                                            (month) => month === monthFilter
+                                        ) +
+                                            1
+                                )
+                                .map((transaction) => (
+                                    <div
+                                        className="transaction"
+                                        key={transaction._id}
+                                        onClick={() => {
+                                            navigate(
+                                                `/edit/${transaction._id}`,
+                                                {
+                                                    state: {
+                                                        amount: transaction.amount,
+                                                        description:
+                                                            transaction.description,
+                                                        type: transaction.type,
+                                                    },
+                                                }
+                                            );
+                                        }}
+                                    >
+                                        <div className="transaction-info">
+                                            <h3 className="date">
+                                                {transaction.date}
+                                            </h3>
+                                            <h3 className="description">
+                                                {transaction.description}
+                                            </h3>
                                         </div>
-                                    ))}
-                            </div>
-                            <div className="total">
-                                <h3 className="balance">SALDO</h3>
-                                <h3
-                                    className={
-                                        total >= 0 ? 'positive' : 'negative'
-                                    }
-                                >
-                                    {parseFloat(total).toFixed(2)}
-                                </h3>
-                            </div>
-                        </>
-                    ) : (
-                        <h1>Não há registros de entrada ou saída</h1>
-                    )
+                                        <div className="transaction-amount">
+                                            <h3
+                                                className={
+                                                    transaction.type === 'in'
+                                                        ? 'in'
+                                                        : 'out'
+                                                }
+                                            >
+                                                {parseFloat(
+                                                    transaction.amount
+                                                ).toFixed(2)}
+                                            </h3>
+                                            <p
+                                                className="delete"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteTransaction(
+                                                        transaction._id
+                                                    );
+                                                }}
+                                            >
+                                                x
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
+                        <div className="total">
+                            <h3 className="balance">SALDO</h3>
+                            <h3
+                                className={total >= 0 ? 'positive' : 'negative'}
+                            >
+                                {parseFloat(total).toFixed(2)}
+                            </h3>
+                        </div>
+                    </>
                 ) : (
-                    <h1>Carregando...</h1>
+                    <h1>Não há registros de entrada ou saída</h1>
                 )}
             </Main>
             <footer>
@@ -277,6 +283,10 @@ const HomeContainer = styled.div`
             cursor: pointer;
             color: #fff;
             font-size: 25px;
+
+            &-loading {
+                font-size: 15px;
+            }
         }
     }
 

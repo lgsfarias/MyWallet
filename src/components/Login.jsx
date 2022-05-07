@@ -2,18 +2,21 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner';
 
 import UserContext from '../contexts/UserContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const { setUser } = useContext(UserContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         axios
             .post('https://mywallet-project-api.herokuapp.com/login', {
                 email,
@@ -26,6 +29,7 @@ const Login = () => {
             })
             .catch((err) => {
                 alert(err.response.data);
+                setLoading(false);
             });
     };
 
@@ -46,14 +50,18 @@ const Login = () => {
                     placeholder="E-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    disabled={loading}
                 />
                 <input
                     type="password"
                     placeholder="Senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
                 />
-                <button type="submit">Entrar</button>
+                <button type="submit">
+                    {loading ? <ThreeDots color="#fff" /> : 'Entrar'}
+                </button>
                 <h2 className="link" onClick={() => navigate('/signup')}>
                     Primeira vez? Cadastre-se!
                 </h2>
@@ -103,6 +111,9 @@ const LoginContainer = styled.div`
         }
 
         button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 46px;
             border: none;
