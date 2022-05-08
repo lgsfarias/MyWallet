@@ -108,16 +108,35 @@ const Home = () => {
             });
     };
 
+    const filter = (transactions) => {
+        return transactions.filter((transaction) => {
+            const month = parseInt(transaction.date.split('/')[1]);
+            const year = parseInt(transaction.date.split('/')[2]);
+            const monthIndex = months.findIndex(
+                (month) => month === monthFilter
+            );
+
+            if (monthIndex === -1) {
+                return year === parseInt(yearFilter);
+            }
+            return (
+                month ===
+                    months.findIndex((month) => month === monthFilter) + 1 &&
+                year === parseInt(yearFilter)
+            );
+        });
+    };
+
     const totalCalculations = () => {
         let total = 0;
-        const transactionsFiltered = transactions.filter(
-            (transaction) =>
-                parseInt(transaction.date.split('/')[1]) ===
-                    months.findIndex((month) => month === monthFilter) + 1 &&
-                parseInt(transaction.date.split('/')[2]) ===
-                    parseInt(yearFilter)
-        );
-        transactionsFiltered.forEach((transaction) => {
+        // const transactionsFiltered = transactions.filter(
+        //     (transaction) =>
+        //         parseInt(transaction.date.split('/')[1]) ===
+        //             months.findIndex((month) => month === monthFilter) + 1 &&
+        //         parseInt(transaction.date.split('/')[2]) ===
+        //             parseInt(yearFilter)
+        // );
+        filter(transactions).forEach((transaction) => {
             if (transaction.type === 'in') {
                 total += transaction.amount;
             } else {
@@ -164,6 +183,7 @@ const Home = () => {
                                 {month}
                             </option>
                         ))}
+                        <option>Ano completo</option>
                     </select>
                     <select
                         className="year-filter"
@@ -187,24 +207,8 @@ const Home = () => {
                 ) : transactions.length > 0 ? (
                     <>
                         <div className="transactions-container">
-                            {transactions
-                                .filter((transaction) => {
-                                    const month = parseInt(
-                                        transaction.date.split('/')[1]
-                                    );
-                                    const year = parseInt(
-                                        transaction.date.split('/')[2]
-                                    );
-                                    return (
-                                        month ===
-                                            months.findIndex(
-                                                (month) => month === monthFilter
-                                            ) +
-                                                1 &&
-                                        year === parseInt(yearFilter)
-                                    );
-                                })
-                                .map((transaction) => (
+                            {filter(transactions).length > 0 ? (
+                                filter(transactions).map((transaction) => (
                                     <div
                                         className="transaction"
                                         key={transaction._id}
@@ -255,7 +259,10 @@ const Home = () => {
                                             </p>
                                         </div>
                                     </div>
-                                ))}
+                                ))
+                            ) : (
+                                <p>Não há transações para este período</p>
+                            )}
                         </div>
                         <div className="total">
                             <h3 className="balance">SALDO</h3>
