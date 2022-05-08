@@ -129,13 +129,6 @@ const Home = () => {
 
     const totalCalculations = () => {
         let total = 0;
-        // const transactionsFiltered = transactions.filter(
-        //     (transaction) =>
-        //         parseInt(transaction.date.split('/')[1]) ===
-        //             months.findIndex((month) => month === monthFilter) + 1 &&
-        //         parseInt(transaction.date.split('/')[2]) ===
-        //             parseInt(yearFilter)
-        // );
         filter(transactions).forEach((transaction) => {
             if (transaction.type === 'in') {
                 total += transaction.amount;
