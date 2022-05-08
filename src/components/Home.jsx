@@ -23,11 +23,16 @@ const Home = () => {
         'Novembro',
         'Dezembro',
     ];
+    const years = new Array(3)
+        .fill(new Date().getFullYear())
+        .map((elem, index) => elem - index);
+
     const [transactions, setTransactions] = useState([]);
     const [total, setTotal] = useState(0);
     const [monthFilter, setMonthFilter] = useState(
         months[new Date().getMonth()]
     );
+    const [yearFilter, setYearFilter] = useState(new Date().getFullYear());
     const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -105,18 +110,21 @@ const Home = () => {
 
     const totalCalculations = () => {
         let total = 0;
-        const monthTransactions = transactions.filter(
+        const transactionsFiltered = transactions.filter(
             (transaction) =>
                 parseInt(transaction.date.split('/')[1]) ===
-                months.findIndex((month) => month === monthFilter) + 1
+                    months.findIndex((month) => month === monthFilter) + 1 &&
+                parseInt(transaction.date.split('/')[2]) ===
+                    parseInt(yearFilter)
         );
-        monthTransactions.forEach((transaction) => {
+        transactionsFiltered.forEach((transaction) => {
             if (transaction.type === 'in') {
                 total += transaction.amount;
             } else {
                 total -= transaction.amount;
             }
         });
+
         return total;
     };
 
@@ -128,7 +136,7 @@ const Home = () => {
     useEffect(() => {
         setTotal(totalCalculations());
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [transactions, monthFilter]);
+    }, [transactions, monthFilter, yearFilter]);
 
     return (
         <HomeContainer>
@@ -142,21 +150,36 @@ const Home = () => {
                 />
             </header>
             <Main>
-                <select
-                    className="month-filter"
-                    name="filter"
-                    defaultValue={monthFilter}
-                    onChange={(e) => {
-                        setMonthFilter(e.target.value);
-                    }}
-                >
-                    {months.map((month) => (
-                        <option key={month} value={month}>
-                            {month}
-                        </option>
-                    ))}
-                </select>
-
+                <div className="filters">
+                    <select
+                        className="month-filter"
+                        name="filter"
+                        defaultValue={monthFilter}
+                        onChange={(e) => {
+                            setMonthFilter(e.target.value);
+                        }}
+                    >
+                        {months.map((month) => (
+                            <option key={month} value={month}>
+                                {month}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        className="year-filter"
+                        name="filter"
+                        defaultValue={new Date().getFullYear()}
+                        onChange={(e) => {
+                            setYearFilter(e.target.value);
+                        }}
+                    >
+                        {years.map((year) => (
+                            <option key={year} value={year}>
+                                {year}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 {loading ? (
                     <h1>
                         <ThreeDots color="#8c11be" />
@@ -165,16 +188,22 @@ const Home = () => {
                     <>
                         <div className="transactions-container">
                             {transactions
-                                .filter(
-                                    (transaction) =>
-                                        parseInt(
-                                            transaction.date.split('/')[1]
-                                        ) ===
-                                        months.findIndex(
-                                            (month) => month === monthFilter
-                                        ) +
-                                            1
-                                )
+                                .filter((transaction) => {
+                                    const month = parseInt(
+                                        transaction.date.split('/')[1]
+                                    );
+                                    const year = parseInt(
+                                        transaction.date.split('/')[2]
+                                    );
+                                    return (
+                                        month ===
+                                            months.findIndex(
+                                                (month) => month === monthFilter
+                                            ) +
+                                                1 &&
+                                        year === parseInt(yearFilter)
+                                    );
+                                })
                                 .map((transaction) => (
                                     <div
                                         className="transaction"
@@ -195,7 +224,7 @@ const Home = () => {
                                     >
                                         <div className="transaction-info">
                                             <h3 className="date">
-                                                {transaction.date}
+                                                {transaction.date.slice(0, 5)}
                                             </h3>
                                             <h3 className="description">
                                                 {transaction.description}
@@ -328,20 +357,27 @@ const Main = styled.main`
         transform: translatey(-50%);
     }
 
-    .month-filter {
-        width: 150px;
-        height: 30px;
-        border: none;
-        margin-bottom: 15px;
-        border-radius: 5px;
-        background-color: #8c11be;
-        color: #fff;
-        font-size: 16px;
-        font-weight: bold;
-        padding: 0 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-        align-self: flex-start;
+    .filters {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+
+        select {
+            width: 150px;
+            height: 30px;
+            border: none;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #8c11be;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 15px;
+        }
     }
 
     .transactions-container {
