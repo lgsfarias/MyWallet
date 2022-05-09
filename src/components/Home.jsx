@@ -153,7 +153,13 @@ const Home = () => {
     return (
         <HomeContainer>
             <header>
-                <h1>Olá, {user.name}</h1>
+                <h1>
+                    Olá,{' '}
+                    {user.name
+                        .split(' ')
+                        .map((elem) => elem[0].toUpperCase() + elem.slice(1))
+                        .join(' ')}
+                </h1>
                 <RiLogoutBoxRLine
                     className="logout"
                     onClick={() => {
@@ -306,6 +312,9 @@ const HomeContainer = styled.div`
             line-height: 31px;
             font-weight: bold;
             color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .logout {
