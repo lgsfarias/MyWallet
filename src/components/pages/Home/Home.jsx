@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
+import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import { ThemeContext } from 'styled-components';
 
 import UserContext from '../../../contexts/UserContext';
 import NewTransactionButton from '../../NewTransactionButton/NewTransactionButton';
 
 import { Container, Main } from './style.js';
 
-const Home = () => {
+const Home = ({ toggleTheme }) => {
     const months = [
         'Janeiro',
         'Fevereiro',
@@ -36,6 +38,7 @@ const Home = () => {
     const [yearFilter, setYearFilter] = useState(new Date().getFullYear());
     const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
+    const { title: themeTitle } = useContext(ThemeContext);
     const navigate = useNavigate();
 
     const deleteTransaction = (id) => {
@@ -161,12 +164,30 @@ const Home = () => {
                         .map((elem) => elem[0].toUpperCase() + elem.slice(1))
                         .join(' ')}
                 </h1>
-                <RiLogoutBoxRLine
-                    className="logout"
-                    onClick={() => {
-                        logout();
-                    }}
-                />
+
+                <div>
+                    {themeTitle === 'light' ? (
+                        <MdDarkMode
+                            size={25}
+                            onClick={() => {
+                                toggleTheme();
+                            }}
+                        />
+                    ) : (
+                        <MdLightMode
+                            size={25}
+                            onClick={() => {
+                                toggleTheme();
+                            }}
+                        />
+                    )}
+                    <RiLogoutBoxRLine
+                        className="logout"
+                        onClick={() => {
+                            logout();
+                        }}
+                    />
+                </div>
             </header>
             <Main>
                 <div className="filters">

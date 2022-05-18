@@ -6,8 +6,8 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     padding: 10px;
-    background-color: #a328d6;
-    color: #fff;
+    background-color: ${(props) => props.theme.colors.secondary};
+    color: ${(props) => props.theme.colors.textClear};
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;

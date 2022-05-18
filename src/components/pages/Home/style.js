@@ -8,7 +8,7 @@ export const Container = styled.div`
     padding: 25px;
     width: 100vw;
     height: 100vh;
-    background-color: #8c11be;
+    background-color: ${(props) => props.theme.colors.primary};
 
     header {
         display: flex;
@@ -20,12 +20,12 @@ export const Container = styled.div`
         left: 0;
         width: 100%;
         height: 80px;
+        color: ${(props) => props.theme.colors.textClear};
 
         h1 {
             font-size: 26px;
             line-height: 31px;
             font-weight: bold;
-            color: #fff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -33,8 +33,8 @@ export const Container = styled.div`
 
         .logout {
             cursor: pointer;
-            color: #fff;
             font-size: 25px;
+            margin-left: 10px;
 
             &-loading {
                 font-size: 15px;
@@ -66,14 +66,15 @@ export const Main = styled.main`
     top: 80px;
     bottom: 150px;
     padding: 15px 15px 50px 15px;
-    background-color: #fff;
+    background-color: ${(props) => props.theme.colors.background};
     border-radius: 5px;
 
     h1 {
         font-size: 20px;
         line-height: 23px;
         text-align: center;
-        color: #868686;
+        /* color: #868686; */
+        color: ${(props) => props.theme.colors.text};
         margin: 0 50px;
         position: absolute;
         top: 50%;
@@ -92,8 +93,8 @@ export const Main = styled.main`
             border: none;
             margin-bottom: 15px;
             border-radius: 5px;
-            background-color: #8c11be;
-            color: #fff;
+            background-color: ${(props) => props.theme.colors.secondary};
+            color: ${(props) => props.theme.colors.textClear};
             font-size: 16px;
             font-weight: bold;
             padding: 0 10px;
@@ -117,12 +118,12 @@ export const Main = styled.main`
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: ${(props) => props.theme.colors.background};
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #8c11be;
+            background: ${(props) => props.theme.colors.primary};
             border-radius: 10px;
         }
     }
@@ -144,14 +145,14 @@ export const Main = styled.main`
             .date {
                 font-size: 16px;
                 line-height: 19px;
-                color: #c6c6c6;
+                color: ${(props) => props.theme.colors.text};
                 margin-right: 10px;
             }
 
             .description {
                 font-size: 16px;
                 line-height: 19px;
-                color: #000000;
+                color: ${(props) => props.theme.colors.text};
             }
         }
 
@@ -175,6 +176,7 @@ export const Main = styled.main`
                 cursor: pointer;
                 opacity: 0.3;
                 margin-left: 5px;
+                color: ${(props) => props.theme.colors.text};
             }
         }
     }
@@ -193,7 +195,7 @@ export const Main = styled.main`
             font-weight: bold;
             font-size: 17px;
             line-height: 20px;
-            color: #000000;
+            color: ${(props) => props.theme.colors.text};
         }
 
         .positive {
