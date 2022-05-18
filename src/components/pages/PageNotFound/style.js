@@ -1,27 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
-const PageNotFound = () => {
-    const navigate = useNavigate();
-    return (
-        <PageNotFoundContainer>
-            <h1>404</h1>
-            <h2>Página não encontrada</h2>
-            <button
-                onClick={() => {
-                    navigate('/');
-                }}
-            >
-                Voltar para o início
-            </button>
-        </PageNotFoundContainer>
-    );
-};
-
-export default PageNotFound;
-
-const PageNotFoundContainer = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,3 +38,4 @@ const PageNotFoundContainer = styled.div`
         cursor: pointer;
     }
 `;
+export default Container;

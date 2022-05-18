@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './components/Home';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
-import NewTransaction from './components/NewTransaction';
-import EditTransaction from './components/EditTransaction';
+import Home from './components/pages/Home/Home';
+import SignUp from './components/pages/SignUp/SignUp';
+import Login from './components/pages/Login/Login';
+import NewTransaction from './components/pages/NewTransaction/NewTransaction';
+import EditTransaction from './components/pages/EditTransaction/EditTransaction';
+import PageNotFound from './components/pages/PageNotFound/PageNotFound';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import UserContext from './contexts/UserContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import PageNotFound from './components/PageNotFound';
 
 const App = () => {
     const [user, setUser] = useState(
