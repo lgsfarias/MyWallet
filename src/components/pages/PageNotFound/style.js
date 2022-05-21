@@ -7,7 +7,7 @@ const Container = styled.div`
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #8c11be;
+    background-color: ${(props) => props.theme.colors.primary};
 
     h1 {
         font-family: 'Saira Stencil One', cursive;
@@ -31,7 +31,7 @@ const Container = styled.div`
         height: 58px;
         border: none;
         border-radius: 5px;
-        background-color: #a328d6;
+        background-color: ${(props) => props.theme.colors.secondary};
         color: #fff;
         font-size: 20px;
         font-weight: bold;

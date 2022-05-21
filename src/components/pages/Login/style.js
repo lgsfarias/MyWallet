@@ -1,19 +1,26 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #8c11be;
+    color: ${(props) => props.theme.colors.textClear};
+    background-color: ${(props) => props.theme.colors.primary};
+
+    .theme-icon {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+    }
 
     h1 {
         font-family: 'Saira Stencil One', cursive;
         font-size: 32px;
         line-height: 50px;
-        color: #fff;
         font-weight: bold;
         margin-bottom: 24px;
     }
@@ -46,8 +53,8 @@ const Container = styled.div`
             height: 46px;
             border: none;
             border-radius: 5px;
-            background-color: #a328d6;
-            color: #fff;
+            background-color: ${(props) => props.theme.colors.secondary};
+            color: ${(props) => props.theme.colors.textClear};
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
@@ -62,7 +69,6 @@ const Container = styled.div`
         .link {
             font-size: 15px;
             font-weight: bold;
-            color: #fff;
             cursor: pointer;
         }
     }

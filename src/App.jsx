@@ -29,8 +29,14 @@ const App = () => {
         <ThemeProvider theme={theme}>
             <UserContext.Provider value={{ user, setUser }}>
                 <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
+                    <Route
+                        path="/"
+                        element={<Login toggleTheme={toggleTheme} />}
+                    />
+                    <Route
+                        path="/signup"
+                        element={<SignUp toggleTheme={toggleTheme} />}
+                    />
                     <Route
                         path="/home"
                         element={

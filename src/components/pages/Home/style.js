@@ -67,14 +67,13 @@ export const Main = styled.main`
     bottom: 150px;
     padding: 15px 15px 50px 15px;
     background-color: ${(props) => props.theme.colors.background};
+    color: ${(props) => props.theme.colors.text};
     border-radius: 5px;
 
     h1 {
         font-size: 20px;
         line-height: 23px;
         text-align: center;
-        /* color: #868686; */
-        color: ${(props) => props.theme.colors.text};
         margin: 0 50px;
         position: absolute;
         top: 50%;
@@ -99,7 +98,6 @@ export const Main = styled.main`
             font-weight: bold;
             padding: 0 10px;
             cursor: pointer;
-            transition: all 0.3s;
             margin-right: 15px;
         }
     }
@@ -165,11 +163,11 @@ export const Main = styled.main`
             line-height: 19px;
 
             .in {
-                color: #03ac00;
+                color: ${(props) => props.theme.colors.green};
             }
 
             .out {
-                color: #c70000;
+                color: ${(props) => props.theme.colors.red};
             }
 
             .delete {
@@ -199,11 +197,11 @@ export const Main = styled.main`
         }
 
         .positive {
-            color: #03ac00;
+            color: ${(props) => props.theme.colors.green};
         }
 
         .negative {
-            color: #c70000;
+            color: ${(props) => props.theme.colors.red};
         }
     }
 `;

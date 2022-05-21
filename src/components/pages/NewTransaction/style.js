@@ -7,7 +7,7 @@ const Container = styled.div`
     width: 100vw;
     height: 100vh;
     padding: 0 25px;
-    background-color: #8c11be;
+    background-color: ${(props) => props.theme.colors.primary};
 
     header {
         display: flex;
@@ -17,17 +17,16 @@ const Container = styled.div`
         width: 100%;
         height: 80px;
         margin-bottom: 15px;
+        color: ${(props) => props.theme.colors.textClear};
 
         h1 {
             font-weight: bold;
             font-size: 26px;
             line-height: 31px;
-            color: #ffffff;
         }
 
         .cancel {
             cursor: pointer;
-            color: #ffffff;
             font-size: 23px;
         }
     }
@@ -47,7 +46,8 @@ const Container = styled.div`
             padding: 0 16px;
             font-size: 20px;
             line-height: 23px;
-            color: #000000;
+            background-color: ${(props) => props.theme.colors.background};
+            color: ${(props) => props.theme.colors.text};
         }
 
         button {
@@ -58,10 +58,10 @@ const Container = styled.div`
             height: 58px;
             border: none;
             border-radius: 5px;
-            background-color: #a328d6;
+            background-color: ${(props) => props.theme.colors.secondary};
             font-size: 20px;
             line-height: 23px;
-            color: #ffffff;
+            color: ${(props) => props.theme.colors.textClear};
             font-weight: bold;
             cursor: pointer;
         }

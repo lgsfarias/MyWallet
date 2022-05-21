@@ -2,16 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
+import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import { ThemeContext } from 'styled-components';
 
 import UserContext from '../../../contexts/UserContext';
 
 import Container from './style';
 
-const Login = () => {
+const Login = ({ toggleTheme }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { title: themeTitle } = useContext(ThemeContext);
 
     const { setUser } = useContext(UserContext);
 
@@ -44,6 +47,23 @@ const Login = () => {
 
     return (
         <Container>
+            {themeTitle === 'light' ? (
+                <MdDarkMode
+                    className="theme-icon"
+                    size={25}
+                    onClick={() => {
+                        toggleTheme();
+                    }}
+                />
+            ) : (
+                <MdLightMode
+                    className="theme-icon"
+                    size={25}
+                    onClick={() => {
+                        toggleTheme();
+                    }}
+                />
+            )}
             <h1>MyWallet</h1>
             <form onSubmit={handleSubmit}>
                 <input
