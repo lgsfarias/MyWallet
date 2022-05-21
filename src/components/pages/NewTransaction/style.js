@@ -46,8 +46,7 @@ const Container = styled.div`
             padding: 0 16px;
             font-size: 20px;
             line-height: 23px;
-            background-color: ${(props) => props.theme.colors.background};
-            color: ${(props) => props.theme.colors.text};
+            color: '#000';
         }
 
         button {

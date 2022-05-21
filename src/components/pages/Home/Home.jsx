@@ -38,7 +38,10 @@ const Home = ({ toggleTheme }) => {
     const [yearFilter, setYearFilter] = useState(new Date().getFullYear());
     const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
-    const { title: themeTitle } = useContext(ThemeContext);
+    const {
+        title: themeTitle,
+        colors: { secondary },
+    } = useContext(ThemeContext);
     const navigate = useNavigate();
 
     const deleteTransaction = (id) => {
@@ -223,7 +226,7 @@ const Home = ({ toggleTheme }) => {
                 </div>
                 {loading ? (
                     <h1>
-                        <ThreeDots color="#8c11be" />
+                        <ThreeDots color={secondary} />
                     </h1>
                 ) : transactions.length > 0 ? (
                     <>

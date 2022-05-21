@@ -42,7 +42,7 @@ const Container = styled.div`
             margin-bottom: 13px;
             font-size: 20px;
             line-height: 23px;
-            color: #000000;
+            color: '#000';
         }
 
         button {
