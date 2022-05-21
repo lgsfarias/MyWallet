@@ -1,3 +1,12 @@
+import { createGlobalStyle } from 'styled-components';
+
+export const Base = createGlobalStyle`
+    body * {
+        font-family: 'Raleway', sans-serif;
+    }
+`;
+
+export const Reset = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -49,3 +58,4 @@ table {
 *{
     box-sizing: border-box;
 }
+`;

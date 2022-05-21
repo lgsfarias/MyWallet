@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import './assets/styles/reset.css';
-import './assets/styles/global.css';
+import * as S from './styles/elements/Base';
 
 import App from './App';
 
 ReactDOM.render(
     <React.StrictMode>
+        <S.Reset />
+        <S.Base />
         <Router>
             <App />
         </Router>
