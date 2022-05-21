@@ -5,7 +5,8 @@ import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { ImCancelCircle } from 'react-icons/im';
 
-import UserContext from '../contexts/UserContext';
+import UserContext from '../../../contexts/UserContext';
+import Container from './style';
 
 const NewTransaction = () => {
     const { state } = useLocation();
@@ -48,7 +49,7 @@ const NewTransaction = () => {
     };
 
     return (
-        <NewTransactionContainer>
+        <Container>
             <header>
                 <h1>Editar {type === 'in' ? 'entrada' : 'saída'}</h1>
                 <ImCancelCircle
@@ -79,76 +80,8 @@ const NewTransaction = () => {
                     )}
                 </button>
             </form>
-        </NewTransactionContainer>
+        </Container>
     );
 };
 
 export default NewTransaction;
-
-const NewTransactionContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100vw;
-    height: 100vh;
-    padding: 0 25px;
-    background-color: #8c11be;
-
-    header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 80px;
-        margin-bottom: 15px;
-
-        h1 {
-            font-weight: bold;
-            font-size: 26px;
-            line-height: 31px;
-            color: #ffffff;
-        }
-
-        .cancel {
-            cursor: pointer;
-            color: #ffffff;
-            font-size: 23px;
-        }
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        input {
-            width: 100%;
-            margin-bottom: 13px;
-            height: 58px;
-            border: none;
-            border-radius: 5px;
-            padding: 0 16px;
-            font-size: 20px;
-            line-height: 23px;
-            color: #000000;
-        }
-
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 58px;
-            border: none;
-            border-radius: 5px;
-            background-color: #a328d6;
-            font-size: 20px;
-            line-height: 23px;
-            color: #ffffff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    }
-`;

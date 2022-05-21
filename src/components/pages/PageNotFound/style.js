@@ -1,34 +1,13 @@
-import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
-const PageNotFound = () => {
-    const navigate = useNavigate();
-    return (
-        <PageNotFoundContainer>
-            <h1>404</h1>
-            <h2>Página não encontrada</h2>
-            <button
-                onClick={() => {
-                    navigate('/');
-                }}
-            >
-                Voltar para o início
-            </button>
-        </PageNotFoundContainer>
-    );
-};
-
-export default PageNotFound;
-
-const PageNotFoundContainer = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #8c11be;
+    background-color: ${(props) => props.theme.colors.primary};
 
     h1 {
         font-family: 'Saira Stencil One', cursive;
@@ -52,10 +31,11 @@ const PageNotFoundContainer = styled.div`
         height: 58px;
         border: none;
         border-radius: 5px;
-        background-color: #a328d6;
+        background-color: ${(props) => props.theme.colors.secondary};
         color: #fff;
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
     }
 `;
+export default Container;
