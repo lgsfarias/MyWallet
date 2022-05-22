@@ -7,7 +7,6 @@ import { ThemeContext } from 'styled-components';
 
 import UserContext from '../../../contexts/UserContext';
 
-// import Container from './style';
 import * as S from './style';
 
 const Login = ({ toggleTheme }) => {

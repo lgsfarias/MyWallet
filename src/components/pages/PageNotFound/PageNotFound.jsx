@@ -1,23 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import Container from './style';
+import * as S from './style';
 
 const PageNotFound = () => {
     const navigate = useNavigate();
     return (
-        <Container>
+        <S.NotFoundWrapper>
             <h1>404</h1>
             <h2>Página não encontrada</h2>
-            <button
+            <S.NotFoundButton
                 onClick={() => {
                     navigate('/');
                 }}
             >
                 Voltar para o início
-            </button>
-        </Container>
+            </S.NotFoundButton>
+        </S.NotFoundWrapper>
     );
 };
 

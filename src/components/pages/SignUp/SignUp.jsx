@@ -5,7 +5,7 @@ import { ThreeDots } from 'react-loader-spinner';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { ThemeContext } from 'styled-components';
 
-import Container from './style';
+import * as S from '../Login/style';
 
 const SignUp = ({ toggleTheme }) => {
     const [name, setName] = useState('');
@@ -38,7 +38,7 @@ const SignUp = ({ toggleTheme }) => {
     };
 
     return (
-        <Container>
+        <S.LoginWrapper>
             {themeTitle === 'light' ? (
                 <MdDarkMode
                     className="theme-icon"
@@ -56,44 +56,44 @@ const SignUp = ({ toggleTheme }) => {
                     }}
                 />
             )}
-            <h1>MyWallet</h1>
-            <form onSubmit={handleSubmit}>
-                <input
+            <S.H1>MyWallet</S.H1>
+            <S.Form onSubmit={handleSubmit}>
+                <S.Input
                     type="text"
                     placeholder="Nome"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={loading}
                 />
-                <input
+                <S.Input
                     type="email"
                     placeholder="E-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
                 />
-                <input
+                <S.Input
                     type="password"
                     placeholder="Senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                 />
-                <input
+                <S.Input
                     type="password"
                     placeholder="Confirme a senha"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={loading}
                 />
-                <button type="submit">
+                <S.Button type="submit">
                     {loading ? <ThreeDots color="#fff" /> : 'Cadastrar'}
-                </button>
+                </S.Button>
                 <h2 className="link" onClick={() => navigate('/')}>
                     Já tem uma conta? Entre agora!
                 </h2>
-            </form>
-        </Container>
+            </S.Form>
+        </S.LoginWrapper>
     );
 };
 
