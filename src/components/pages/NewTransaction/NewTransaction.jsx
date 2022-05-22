@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { ImCancelCircle } from 'react-icons/im';
 
 import UserContext from '../../../contexts/UserContext';
-import Container from './style';
+import * as S from '../EditTransaction/style';
 
 const NewTransaction = () => {
     const [amount, setAmount] = useState('');
@@ -46,34 +45,34 @@ const NewTransaction = () => {
     };
 
     return (
-        <Container>
-            <header>
+        <S.EditWrapper>
+            <S.EditHeader>
                 <h1>Nova {type}</h1>
                 <ImCancelCircle
                     className="cancel"
                     onClick={() => navigate('/home')}
                 />
-            </header>
-            <form onSubmit={handleSubmit}>
-                <input
+            </S.EditHeader>
+            <S.EditForm onSubmit={handleSubmit}>
+                <S.Input
                     type="number"
                     placeholder="Valor"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     disabled={loading}
                 />
-                <input
+                <S.Input
                     type="text"
                     placeholder="Descrição"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     disabled={loading}
                 />
-                <button type="submit">
+                <S.Button type="submit">
                     {loading ? <ThreeDots color="#fff" /> : `Salvar ${type}`}
-                </button>
-            </form>
-        </Container>
+                </S.Button>
+            </S.EditForm>
+        </S.EditWrapper>
     );
 };
 

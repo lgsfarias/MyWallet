@@ -1,70 +1,28 @@
 import styled from 'styled-components';
+import Header from '../../../styles/components/Header/Header';
+import Form from '../../../styles/elements/Form/Form';
+import Input from '../../../styles/elements/Input/Input';
+import Button from '../../../styles/elements/Button/Button';
 
-const Container = styled.div`
+export const EditWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     width: 100vw;
     height: 100vh;
-    padding: 0 25px;
+    padding-top: 80px;
     background-color: ${(props) => props.theme.colors.primary};
+`;
 
-    header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 80px;
-        margin-bottom: 15px;
-
-        h1 {
-            font-weight: bold;
-            font-size: 26px;
-            line-height: 31px;
-            color: #ffffff;
-        }
-
-        .cancel {
-            cursor: pointer;
-            color: #ffffff;
-            font-size: 23px;
-        }
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        input {
-            width: 100%;
-            margin-bottom: 13px;
-            height: 58px;
-            border: none;
-            border-radius: 5px;
-            padding: 0 16px;
-            font-size: 20px;
-            line-height: 23px;
-            color: '#000';
-        }
-
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 58px;
-            border: none;
-            border-radius: 5px;
-            background-color: ${(props) => props.theme.colors.secondary};
-            font-size: 20px;
-            line-height: 23px;
-            color: #ffffff;
-            font-weight: bold;
-            cursor: pointer;
-        }
+export const EditHeader = styled(Header)`
+    .cancel {
+        cursor: pointer;
+        font-size: 23px;
     }
 `;
-export default Container;
+
+export const EditForm = styled(Form)`
+    max-width: none;
+`;
+
+export { Input, Button };

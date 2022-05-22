@@ -1,10 +1,8 @@
 import styled from 'styled-components';
+import Wrapper from '../../../styles/elements/Wrapper/Wrapper';
+import Button from '../../../styles/elements/Button/Button';
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+export const NotFoundWrapper = styled(Wrapper)`
     width: 100vw;
     height: 100vh;
     background-color: ${(props) => props.theme.colors.primary};
@@ -25,17 +23,8 @@ const Container = styled.div`
         font-weight: bold;
         margin-bottom: 24px;
     }
-
-    button {
-        width: 260px;
-        height: 58px;
-        border: none;
-        border-radius: 5px;
-        background-color: ${(props) => props.theme.colors.secondary};
-        color: #fff;
-        font-size: 20px;
-        font-weight: bold;
-        cursor: pointer;
-    }
 `;
-export default Container;
+
+export const NotFoundButton = styled(Button)`
+    width: 260px;
+`;

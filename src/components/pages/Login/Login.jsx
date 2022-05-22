@@ -7,7 +7,7 @@ import { ThemeContext } from 'styled-components';
 
 import UserContext from '../../../contexts/UserContext';
 
-import Container from './style';
+import * as S from './style';
 
 const Login = ({ toggleTheme }) => {
     const [email, setEmail] = useState('');
@@ -46,7 +46,7 @@ const Login = ({ toggleTheme }) => {
     }, []);
 
     return (
-        <Container>
+        <S.LoginWrapper>
             {themeTitle === 'light' ? (
                 <MdDarkMode
                     className="theme-icon"
@@ -64,30 +64,30 @@ const Login = ({ toggleTheme }) => {
                     }}
                 />
             )}
-            <h1>MyWallet</h1>
-            <form onSubmit={handleSubmit}>
-                <input
+            <S.H1>MyWallet</S.H1>
+            <S.Form onSubmit={handleSubmit}>
+                <S.Input
                     type="email"
                     placeholder="E-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
                 />
-                <input
+                <S.Input
                     type="password"
                     placeholder="Senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                 />
-                <button type="submit">
+                <S.Button type="submit">
                     {loading ? <ThreeDots color="#fff" /> : 'Entrar'}
-                </button>
+                </S.Button>
                 <h2 className="link" onClick={() => navigate('/signup')}>
                     Primeira vez? Cadastre-se!
                 </h2>
-            </form>
-        </Container>
+            </S.Form>
+        </S.LoginWrapper>
     );
 };
 

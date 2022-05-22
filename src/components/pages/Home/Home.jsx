@@ -8,28 +8,12 @@ import { ThemeContext } from 'styled-components';
 
 import UserContext from '../../../contexts/UserContext';
 import NewTransactionButton from '../../NewTransactionButton/NewTransactionButton';
+import TransactionsContainer from '../../TransactionsContainer/TransactionsContainer';
+import { months, years } from '../../../utils/date';
 
-import { Container, Main } from './style.js';
+import * as S from './style.js';
 
 const Home = ({ toggleTheme }) => {
-    const months = [
-        'Janeiro',
-        'Fevereiro',
-        'Março',
-        'Abril',
-        'Maio',
-        'Junho',
-        'Julho',
-        'Agosto',
-        'Setembro',
-        'Outubro',
-        'Novembro',
-        'Dezembro',
-    ];
-    const years = new Array(3)
-        .fill(new Date().getFullYear())
-        .map((elem, index) => elem - index);
-
     const [transactions, setTransactions] = useState([]);
     const [total, setTotal] = useState(0);
     const [monthFilter, setMonthFilter] = useState(
@@ -158,14 +142,17 @@ const Home = ({ toggleTheme }) => {
     }, [transactions, monthFilter, yearFilter]);
 
     return (
-        <Container>
-            <header>
+        <S.HomeWrapper>
+            <S.HomeHeader>
                 <h1>
                     Olá,{' '}
-                    {user.name
-                        .split(' ')
-                        .map((elem) => elem[0].toUpperCase() + elem.slice(1))
-                        .join(' ')}
+                    {
+                        user.name
+                            .split(' ')
+                            .map(
+                                (elem) => elem[0].toUpperCase() + elem.slice(1)
+                            )[0]
+                    }
                 </h1>
 
                 <div>
@@ -191,8 +178,8 @@ const Home = ({ toggleTheme }) => {
                         }}
                     />
                 </div>
-            </header>
-            <Main>
+            </S.HomeHeader>
+            <S.Main>
                 <div className="filters">
                     <select
                         className="month-filter"
@@ -230,64 +217,11 @@ const Home = ({ toggleTheme }) => {
                     </h1>
                 ) : transactions.length > 0 ? (
                     <>
-                        <div className="transactions-container">
-                            {filter(transactions).length > 0 ? (
-                                filter(transactions).map((transaction) => (
-                                    <div
-                                        className="transaction"
-                                        key={transaction._id}
-                                        onClick={() => {
-                                            navigate(
-                                                `/edit/${transaction._id}`,
-                                                {
-                                                    state: {
-                                                        amount: transaction.amount,
-                                                        description:
-                                                            transaction.description,
-                                                        type: transaction.type,
-                                                    },
-                                                }
-                                            );
-                                        }}
-                                    >
-                                        <div className="transaction-info">
-                                            <h3 className="date">
-                                                {transaction.date.slice(0, 5)}
-                                            </h3>
-                                            <h3 className="description">
-                                                {transaction.description}
-                                            </h3>
-                                        </div>
-                                        <div className="transaction-amount">
-                                            <h3
-                                                className={
-                                                    transaction.type === 'in'
-                                                        ? 'in'
-                                                        : 'out'
-                                                }
-                                            >
-                                                {parseFloat(
-                                                    transaction.amount
-                                                ).toFixed(2)}
-                                            </h3>
-                                            <p
-                                                className="delete"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    deleteTransaction(
-                                                        transaction._id
-                                                    );
-                                                }}
-                                            >
-                                                x
-                                            </p>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Não há transações para este período</p>
-                            )}
-                        </div>
+                        <TransactionsContainer
+                            transactions={transactions}
+                            deleteTransaction={deleteTransaction}
+                            filter={filter}
+                        />
                         <div className="total">
                             <h3 className="balance">SALDO</h3>
                             <h3
@@ -300,12 +234,12 @@ const Home = ({ toggleTheme }) => {
                 ) : (
                     <h1>Não há registros de entrada ou saída</h1>
                 )}
-            </Main>
-            <footer>
+            </S.Main>
+            <S.Footer>
                 <NewTransactionButton className="btn" type="entrada" />
                 <NewTransactionButton className="btn" type="saída" />
-            </footer>
-        </Container>
+            </S.Footer>
+        </S.HomeWrapper>
     );
 };
 
