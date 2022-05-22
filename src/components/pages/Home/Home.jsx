@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
@@ -10,6 +9,8 @@ import UserContext from '../../../contexts/UserContext';
 import NewTransactionButton from '../../NewTransactionButton/NewTransactionButton';
 import TransactionsContainer from '../../TransactionsContainer/TransactionsContainer';
 import { months, years } from '../../../utils/date';
+
+import api from '../../../services/api';
 
 import * as S from './style.js';
 
@@ -28,13 +29,12 @@ const Home = ({ toggleTheme }) => {
     } = useContext(ThemeContext);
     const navigate = useNavigate();
 
-    const deleteTransaction = (id) => {
+    const deleteTransaction = async (id) => {
         const confirmation = window.confirm(
             'Quer mesmo deletar essa transação?'
         );
         if (confirmation) {
             setLoading(true);
-            const URI = `https://mywallet-project-api.herokuapp.com/transactions/${id}`;
 
             const config = {
                 headers: {
@@ -42,61 +42,55 @@ const Home = ({ toggleTheme }) => {
                 },
             };
 
-            axios
-                .delete(URI, config)
-                .then(() => {
-                    getTransactions();
-                })
-                .catch((err) => {
-                    setLoading(false);
-                    alert(err.response.data);
-                });
+            try {
+                await api.delete(`transactions/${id}`, config);
+                getTransactions();
+            } catch (err) {
+                setLoading(false);
+                alert(err.response.data);
+            }
         } else {
             return;
         }
     };
 
-    const getTransactions = () => {
+    const getTransactions = async () => {
         setLoading(true);
-        const URI = 'https://mywallet-project-api.herokuapp.com/transactions';
 
         const config = {
             headers: {
                 Authorization: `Bearer ${user.token}`,
             },
         };
-        axios
-            .get(URI, config)
-            .then((res) => {
-                setTransactions(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setLoading(false);
-                alert(err.response.data);
-            });
+
+        try {
+            const { data } = await api.get('transactions', config);
+            setTransactions(data);
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            alert(err.response.data);
+        }
     };
 
-    const logout = () => {
+    const logout = async () => {
         setLoading(true);
         const token = user.token;
-        const URI = 'https://mywallet-project-api.herokuapp.com/logout';
 
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         };
-        axios
-            .post(URI, {}, config)
-            .then((res) => {
-                localStorage.removeItem('user');
-                navigate('/');
-            })
-            .catch((err) => {
-                setLoading(false);
-                alert(err.response.data);
-            });
+
+        try {
+            await api.post('logout', {}, config);
+            localStorage.removeItem('user');
+            navigate('/');
+        } catch (err) {
+            setLoading(false);
+            alert(err.response.data);
+        }
     };
 
     const filter = (transactions) => {

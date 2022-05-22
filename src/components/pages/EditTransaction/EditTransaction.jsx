@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { ImCancelCircle } from 'react-icons/im';
 
 import UserContext from '../../../contexts/UserContext';
 import * as S from './style';
+
+import api from '../../../services/api';
 
 const NewTransaction = () => {
     const { state } = useLocation();
@@ -19,10 +20,9 @@ const NewTransaction = () => {
 
     const { user } = useContext(UserContext);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const URI = `https://mywallet-project-api.herokuapp.com/transactions/${id}`;
 
         const config = {
             headers: {
@@ -36,15 +36,13 @@ const NewTransaction = () => {
             type,
         };
 
-        axios
-            .put(URI, data, config)
-            .then((res) => {
-                navigate('/home');
-            })
-            .catch((err) => {
-                setLoading(false);
-                alert(err.response.data);
-            });
+        try {
+            await api.put(`transactions/${id}`, data, config);
+            navigate('/home');
+        } catch (err) {
+            setLoading(false);
+            alert(err.response.data);
+        }
     };
 
     return (

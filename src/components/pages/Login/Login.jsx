@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { ThemeContext } from 'styled-components';
 
 import UserContext from '../../../contexts/UserContext';
+
+import api from '../../../services/api';
 
 import * as S from './style';
 
@@ -18,23 +19,24 @@ const Login = ({ toggleTheme }) => {
 
     const { setUser } = useContext(UserContext);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        axios
-            .post('https://mywallet-project-api.herokuapp.com/login', {
-                email,
-                password,
-            })
-            .then((res) => {
-                localStorage.setItem('user', JSON.stringify(res.data));
-                setUser(res.data);
-                navigate('/home');
-            })
-            .catch((err) => {
-                alert(err.response.data);
-                setLoading(false);
-            });
+
+        const body = {
+            email,
+            password,
+        };
+
+        try {
+            const { data } = await api.post('login', body);
+            localStorage.setItem('user', JSON.stringify(data));
+            setUser(data);
+            navigate('/home');
+        } catch (err) {
+            setLoading(false);
+            alert(err.response.data);
+        }
     };
 
     useEffect(() => {

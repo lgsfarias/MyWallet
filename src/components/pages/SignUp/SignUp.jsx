@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { ThemeContext } from 'styled-components';
 
 import * as S from '../Login/style';
+
+import api from '../../../services/api';
 
 const SignUp = ({ toggleTheme }) => {
     const [name, setName] = useState('');
@@ -17,24 +18,25 @@ const SignUp = ({ toggleTheme }) => {
 
     const { title: themeTitle } = useContext(ThemeContext);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        axios
-            .post('https://mywallet-project-api.herokuapp.com/signup', {
-                name,
-                email,
-                password,
-                confirmPassword,
-            })
-            .then((res) => {
-                alert('Usuário criado com sucesso!');
-                navigate('/');
-            })
-            .catch((err) => {
-                setLoading(false);
-                alert(err.response.data);
-            });
+
+        const body = {
+            name,
+            email,
+            password,
+            confirmPassword,
+        };
+
+        try {
+            await api.post('/signup', body);
+            alert('Usuário criado com sucesso!');
+            navigate('/');
+        } catch (err) {
+            setLoading(false);
+            alert(err.response.data);
+        }
     };
 
     return (
