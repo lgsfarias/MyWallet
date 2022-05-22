@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { ImCancelCircle } from 'react-icons/im';
 
 import UserContext from '../../../contexts/UserContext';
 import * as S from '../EditTransaction/style';
+
+import api from '../../../services/api';
 
 const NewTransaction = () => {
     const [amount, setAmount] = useState('');
@@ -16,10 +17,9 @@ const NewTransaction = () => {
 
     const { user } = useContext(UserContext);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const URI = 'https://mywallet-project-api.herokuapp.com/transactions';
 
         const config = {
             headers: {
@@ -33,15 +33,13 @@ const NewTransaction = () => {
             type: type === 'entrada' ? 'in' : 'out',
         };
 
-        axios
-            .post(URI, data, config)
-            .then((res) => {
-                navigate('/home');
-            })
-            .catch((err) => {
-                setLoading(false);
-                alert(err.response.data);
-            });
+        try {
+            await api.post('transactions', data, config);
+            navigate('/home');
+        } catch (err) {
+            setLoading(false);
+            alert(err.response.data);
+        }
     };
 
     return (
