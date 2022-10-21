@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 export const Base = createGlobalStyle`
     body * {
-        font-family: 'Raleway', sans-serif;
+        font-family: 'Roboto', sans-serif;
     }
 `;
 
